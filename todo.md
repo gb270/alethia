@@ -12,10 +12,7 @@
 - [x] Add or, and keywords
 - [x] Add while loop
 - [x] Add break keyword
-- [ ] Add functions
-
-
-
+- [x] Add functions
 
 
 At this stage the language should have enough native support to be used such that other functions can be written in Alethia
