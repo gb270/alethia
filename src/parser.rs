@@ -78,65 +78,61 @@ impl Parser {
         match self.current_token() {
             Token::Let => {
                 self.advance();
-                
+    
                 let name = match self.current_token() {
                     Token::Identifier(ref id) => {
                         let name = id.clone();
                         self.advance();
                         name
-                    },
+                    }
                     _ => return Err(format!("Expected identifier after 'let', found {:?}", self.current_token())),
                 };
-
+    
                 match self.current_token() {
-                    Token::Assign => self.advance(),
+                    Token::Assign => self.advance(), 
                     _ => return Err(format!("Expected '=' after identifier in let statement, found {:?}", self.current_token())),
                 }
-
+    
                 let value = self.parse_expression()?;
-
                 Ok(AstNode::VariableDeclaration {
                     name,
                     value: Box::new(value),
                 })
-            },
+            }
+            Token::Identifier(ref name) => {
+                // Check if the next token is '=' for assignment
+                if let Some(Token::Assign) = self.tokens.get(self.position + 1) {
+                    let name = name.clone();
+                    self.advance(); 
+                    self.advance(); 
+                    let value = self.parse_expression()?;
+                    Ok(AstNode::VariableDeclaration {
+                        name,
+                        value: Box::new(value),
+                    })
+                } else {
+                    // Otherwise, treat as an expression
+                    self.parse_expression()
+                }
+            }
             Token::Print => {
                 self.advance();
-                
-                let has_paren = matches!(self.current_token(), Token::LeftParen);
-                if has_paren {
-                    self.advance();
-                }
-                
                 let expr = self.parse_expression()?;
-                
-                if has_paren {
-                    match self.current_token() {
-                        Token::RightParen => self.advance(),
-                        _ => return Err(format!("Expected right parenthesis, found {:?}", self.current_token())),
-                    }
-                }
-                
                 Ok(AstNode::PrintStatement(Box::new(expr)))
-            },
+            }
             Token::If => self.parse_if_statement(),
             Token::While => self.parse_while_statement(),
             Token::Break => {
                 self.advance();
                 Ok(AstNode::Break)
-            },
+            }
             Token::Func => self.parse_function_declaration(),
             Token::Return => self.parse_return_statement(),
-            _ => {
-                // In order to handle functions being called
-                // we just assume that any other identifier could potentially be a function
-                // then we check validity by passing it through parse_expression flow
-                // there is potentially a better way to do this
-                let expr = self.parse_expression()?;
-                Ok(expr)
-            }
+            _ => Err(format!("Unexpected token in statement: {:?}", self.current_token())),
         }
     }
+    
+
 
     pub fn parse_expression(&mut self) -> Result<AstNode, String> {
         self.parse_or_expression()

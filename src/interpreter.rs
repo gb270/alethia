@@ -40,12 +40,21 @@ impl Interpreter {
     }
 
     fn set_variable(&mut self, name: String, value: Value) {
+        // Scope search same as in get_variable
+        for scope in self.scopes.iter_mut().rev() {
+            if scope.contains_key(&name) {
+                scope.insert(name, value);
+                return;
+            }
+        }
+    
         if let Some(scope) = self.scopes.last_mut() {
             scope.insert(name, value);
         } else {
             self.variables.insert(name, value);
         }
     }
+    
 
     fn get_variable(&self, name: &str) -> Option<Value> {
         // search scopes from innermost to outermost

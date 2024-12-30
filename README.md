@@ -1,9 +1,8 @@
 Creating a language in rust.
 This is not intended to be used as a programming language, this is just an exercise. 
 
-The first step of the language is to create a lexer.
+The first step of creating a language is to create a lexer.
 The lexer goes through the code and identifies key words, what variables are etc.
-
 Second step is to make the parser to construct the AST.
 Third step is to make the interpreter to traverse the AST!
 

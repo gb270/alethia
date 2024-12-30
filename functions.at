@@ -22,3 +22,7 @@ print fib6;
 greet("alice");
 
 print(fibonacci(10));
+
+func length_of_array(arr) {
+    
+}
