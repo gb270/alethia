@@ -1,0 +1,24 @@
+func add(x, y) {
+    return x + y;
+}
+
+func fibonacci(n) {
+    if n < 2 {
+        return n;
+    }
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+func greet(name) {
+    print "Hello, " + name + "!";
+}
+
+let result = add(5, 3);
+print result; 
+
+let fib6 = fibonacci(6);
+print fib6;    
+
+greet("alice");
+
+print(fibonacci(10));
