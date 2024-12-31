@@ -176,7 +176,10 @@ impl Interpreter {
                 match (array_val, index_val) {
                     (Value::Array(arr), Value::Number(idx)) => {
                         if idx < 0 || idx as usize >= arr.len() {
-                            return Err(InterpreterError::Error(format!("Array index {} out of bounds", idx)));
+                            // changing this to now return nil instead of an error so that we can handle writing
+                            // other functions such as get length
+                            // return Err(InterpreterError::Error(format!("Array index {} out of bounds", idx)));
+                            return Ok(Value::Nil);
                         }
                         Ok(arr[idx as usize].clone())
                     }
@@ -284,6 +287,7 @@ impl Interpreter {
                 }
                 Ok(last_value)
             }
+            AstNode::Nil => Ok(Value::Nil),
         }
     }
 }

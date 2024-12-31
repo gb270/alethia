@@ -36,7 +36,7 @@ impl fmt::Display for Value {
                 write!(f, "{{{}}}", pairs.join(", "))    
             }
             Value::Bool(b) => write!(f, "{}", b),
-            Value::Nil => Ok(()),
+            Value::Nil => write!(f, "nil"),
             _ => panic!("Cannot display what you are trying to display."),
         }
     }
@@ -51,6 +51,9 @@ impl Add for Value {
             (Value::String(a), Value::String(b)) => Value::String(a + &b),
             (Value::String(a), Value::Number(b)) => Value::String(a + &b.to_string()),
             (Value::Number(a), Value::String(b)) => Value::String(a.to_string() + &b),
+            (Value::String(a), Value::Nil) | (Value::Nil, Value::String(a)) => {
+                Value::String(a + "nil")
+            },
             _ => panic!("Cannot add in this instance!"),
         }
     }
@@ -104,9 +107,11 @@ impl Div for Value {
 impl PartialEq for Value {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
+            (Value::Nil, Value::Nil) => true,
             (Value::Number(a), Value::Number(b)) => a == b,
             (Value::String(a), Value::String(b)) => a == b,
             (Value::Array(a), Value::Array(b)) => a == b,
+            (Value::Bool(a), Value::Bool(b)) => a == b,
             _ => false,
         }
     }

@@ -171,6 +171,7 @@ impl Lexer {
             "return" => Token::Return,
             "or" => Token::Or,
             "and" => Token::And,
+            "nil" => Token::Nil,
             _ => Token::Identifier(identifier),
         })
     }

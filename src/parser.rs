@@ -227,38 +227,42 @@ impl Parser {
         match self.current_token().clone() {
             Token::LeftBracket => self.parse_array_literal(),
             Token::LeftCurly => self.parse_dictionary_literal(),
-            Token::Number(n) => {
-                self.advance();
-                Ok(AstNode::NumberLiteral(n))
-            }
-            Token::StringLiteral(s) => {
-                self.advance();
-                Ok(AstNode::StringLiteral(s))
-            }
             Token::Identifier(name) => {
                 self.advance();
-                // Check if this is a function call
-                if *self.current_token() == Token::LeftParen {
+                // Handle indexing or function calls
+                if *self.current_token() == Token::LeftBracket {
+                    self.advance();
+                    let index = self.parse_expression()?;
+                    self.consume(&Token::RightBracket)?;
+                    Ok(AstNode::IndexExpression(
+                        Box::new(AstNode::Identifier(name)),
+                        Box::new(index),
+                    ))
+                } else if *self.current_token() == Token::LeftParen {
                     self.advance();
                     let mut arguments = Vec::new();
-                    
+    
                     if *self.current_token() != Token::RightParen {
                         loop {
                             let arg = self.parse_expression()?;
                             arguments.push(arg);
-                            
+    
                             match self.current_token() {
                                 Token::Comma => {
                                     self.advance();
                                     continue;
                                 }
                                 Token::RightParen => break,
-                                _ => return Err(format!("Expected ',' or ')', found {:?}", self.current_token())),
+                                _ => {
+                                    return Err(format!(
+                                        "Expected ',' or ')', found {:?}",
+                                        self.current_token()
+                                    ));
+                                }
                             }
                         }
                     }
                     self.consume(&Token::RightParen)?;
-                    
                     Ok(AstNode::FunctionCall {
                         function: Box::new(AstNode::Identifier(name)),
                         arguments,
@@ -273,6 +277,19 @@ impl Parser {
                 self.consume(&Token::RightParen)?;
                 Ok(expr)
             }
+            Token::Nil => {
+                self.advance();
+                Ok(AstNode::Nil)
+            }
+            
+            Token::Number(n) => {
+                self.advance();
+                Ok(AstNode::NumberLiteral(n))
+            }
+            Token::StringLiteral(s) => {
+                self.advance();
+                Ok(AstNode::StringLiteral(s))
+            }
             Token::True => {
                 self.advance();
                 Ok(AstNode::Bool(true))
@@ -281,10 +298,10 @@ impl Parser {
                 self.advance();
                 Ok(AstNode::Bool(false))
             }
-            other => Err(format!("Unexpected token in factor: {:?}", other)),
+            _ => Err(format!("Unexpected token in factor: {:?}", self.current_token())),
         }
     }
-
+    
     fn parse_array_literal(&mut self) -> Result<AstNode, String> {
         self.consume(&Token::LeftBracket)?;
 

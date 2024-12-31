@@ -16,7 +16,7 @@
 
 
 At this stage the language should have enough native support to be used such that other functions can be written in Alethia
-- [ ] Implement function to get length of an array
+- [x] Implement function to get length of an array
 - [ ] Implement ability to add strings together (string manipulation should all be possible with for loops and string indexing)
 - [ ] Implemnent modulo and exponent
 - [ ] Add ability to index strings

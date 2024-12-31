@@ -34,5 +34,6 @@ pub enum AstNode {
         arguments: Vec<AstNode>,
     },
     Return(Option<Box<AstNode>>),
+    Nil,
 
 }

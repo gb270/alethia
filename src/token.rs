@@ -32,6 +32,7 @@ pub enum Token {
     False,              // Keyword: false
     Or,                 // Keyword: or
     And,                // Keyword: and
+    Nil,                // Keyword: nil
     Eof,                // End of file/input
     Unknown(char),      // Unknown character
 }
