@@ -1,7 +1,4 @@
-let i = nil;
-
-print(i);
-if i == nil  {
-    print("test");
-}
+let str = "hello";
+let i = 0;
+print(str[i]);
 

@@ -26,7 +26,8 @@ impl Interpreter {
     fn is_truthy(&self, value: &Value) -> Result<bool, InterpreterError> {
         match value {
             Value::Bool(b) => Ok(*b),
-            Value::String(s) if s == "true" || s == "false" => Ok(s == "true"),
+            Value::String(s) if s == "true" => Ok(true),
+            Value::String(s) if s == "false" => Ok(false),
             _ => Err(InterpreterError::Error(format!("Cannot convert {:?} to boolean", value)))
         }
     }
@@ -109,18 +110,18 @@ impl Interpreter {
                     }
                     Token::Equal => {
                         let is_equal = left_val == right_val;
-                        Ok(Value::String(is_equal.to_string()))
-                    }
+                        Ok(Value::Bool(is_equal))
+                    },
                     Token::LessThan => {
                         if let (Value::Number(lhs), Value::Number(rhs)) = (&left_val, &right_val) {
-                            Ok(Value::String((lhs < rhs).to_string()))
+                            Ok(Value::Bool(lhs < rhs))
                         } else {
                             Err(InterpreterError::Error("Cannot compare non-numeric values with <".to_string()))
                         }
-                    }
+                    },
                     Token::GreaterThan => {
                         if let (Value::Number(lhs), Value::Number(rhs)) = (&left_val, &right_val) {
-                            Ok(Value::String((lhs > rhs).to_string()))
+                            Ok(Value::Bool(lhs > rhs))
                         } else {
                             Err(InterpreterError::Error("Cannot compare non-numeric values with >".to_string()))
                         }

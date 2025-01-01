@@ -51,9 +51,9 @@ impl Add for Value {
             (Value::String(a), Value::String(b)) => Value::String(a + &b),
             (Value::String(a), Value::Number(b)) => Value::String(a + &b.to_string()),
             (Value::Number(a), Value::String(b)) => Value::String(a.to_string() + &b),
-            (Value::String(a), Value::Nil) | (Value::Nil, Value::String(a)) => {
-                Value::String(a + "nil")
-            },
+            (Value::String(a), Value::Bool(b)) => Value::String(a + &b.to_string()),
+            (Value::Bool(a), Value::String(b)) => Value::String(a.to_string() + &b),
+            (Value::String(a), Value::Nil) | (Value::Nil, Value::String(a)) => Value::String(a + "nil"),
             _ => panic!("Cannot add in this instance!"),
         }
     }

@@ -17,15 +17,21 @@
 
 At this stage the language should have enough native support to be used such that other functions can be written in Alethia
 - [x] Implement function to get length of an array
-- [ ] Implement ability to add strings together (string manipulation should all be possible with for loops and string indexing)
-- [ ] Implemnent modulo and exponent
-- [ ] Add ability to index strings
-- [ ] Implement for loop
+- [x] Implement ability to add strings together (string manipulation should all be possible with for loops and string indexing)
+- [x] Fibonnaci
+- [ ] Array Reversal: Reverse an array without using any built-in reverse or helper functions.
+
+
 
 Extra steps to improve the language:
-- [ ] Add ability to read and write files
 - [ ] Add floats (yes this is not in the language at the moment...)
+- [ ] Implemnent modulo and exponent
+- [ ] Implement for loop
+- [ ] Add ability to index strings
+- [ ] Add ability to read and write files 
 - [ ] Add comments (actually shouldn't be too difficult. Just ignore them and don't add anything to the lexer)
 - [ ] Add not keyword
+- [ ] Fix recursion (it does not work currently)
+
 
 
