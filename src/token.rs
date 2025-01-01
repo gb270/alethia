@@ -9,7 +9,7 @@ pub enum Token {
     Func,               // Keyword: func
     Return,             // Keyword: return
     Identifier(String), // Identifiers: variable names
-    Number(i64),        // Numbers
+    Number(f64),        // Numbers/ floats
     StringLiteral(String), // For string literals
     Assign,             // '=' symbol
     Equal,              // '==' symbol

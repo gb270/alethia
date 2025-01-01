@@ -71,7 +71,7 @@ impl Interpreter {
     pub fn evaluate(&mut self, node: &AstNode) -> Result<Value, InterpreterError> {
         match node {
             AstNode::Program(statements) => {
-                let mut last_value = Value::Number(0);
+                let mut last_value = Value::Number(0.0);
                 for statement in statements {
                     match self.evaluate(statement) {
                         Ok(value) => last_value = value,
@@ -92,7 +92,7 @@ impl Interpreter {
                 if value != Value::Nil {
                     println!("{}", value);
                 }
-                Ok(Value::Number(0))
+                Ok(Value::Number(0.0))
             }
             AstNode::BinaryExpression { left, operator, right } => {
                 let left_val = self.evaluate(left)?;
@@ -102,7 +102,7 @@ impl Interpreter {
                     Token::Minus => Ok(left_val - right_val),
                     Token::Multiply => Ok(left_val * right_val),
                     Token::Divide => {
-                        if right_val == Value::Number(0) {
+                        if right_val == Value::Number(0.0) {
                             Err(InterpreterError::Error("Division by zero".to_string()))
                         } else {
                             Ok(left_val / right_val)
@@ -176,7 +176,7 @@ impl Interpreter {
                 let index_val = self.evaluate(index_node)?;
                 match (array_val, index_val) {
                     (Value::Array(arr), Value::Number(idx)) => {
-                        if idx < 0 || idx as usize >= arr.len() {
+                        if idx < 0.0 || idx as usize >= arr.len() {
                             // changing this to now return nil instead of an error so that we can handle writing
                             // other functions such as get length
                             // return Err(InterpreterError::Error(format!("Array index {} out of bounds", idx)));
@@ -208,7 +208,7 @@ impl Interpreter {
                         if let Some(alt) = alternative {
                             self.evaluate(alt)
                         } else {
-                            Ok(Value::Number(0))
+                            Ok(Value::Number(0.0))
                         }
                     }
                 }
@@ -226,7 +226,7 @@ impl Interpreter {
                         Err(e) => return Err(e),
                     }
                 }
-                Ok(Value::Number(0))
+                Ok(Value::Number(0.0))
             }
             AstNode::Break => Err(InterpreterError::Break),
             AstNode::FunctionDeclaration { name, params, body } => {
@@ -277,7 +277,7 @@ impl Interpreter {
                 Err(InterpreterError::Return(value))
             }
             AstNode::Block(statements) => {
-                let mut last_value = Value::Number(0);
+                let mut last_value = Value::Number(0.0);
                 for statement in statements {
                     match self.evaluate(statement) {
                         Ok(value) => last_value = value,

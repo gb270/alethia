@@ -137,15 +137,21 @@ impl Lexer {
 
     pub fn number(&mut self) -> Token {
         let mut number = String::new();
+        let mut has_decimal = false;
+    
         while let Some(c) = self.current_char {
             if c.is_numeric() {
+                number.push(c);
+                self.advance();
+            } else if c == '.' && !has_decimal {
+                has_decimal = true;
                 number.push(c);
                 self.advance();
             } else {
                 break;
             }
         }
-        Token::Number(number.parse::<i64>().unwrap())
+        Token::Number(number.parse::<f64>().unwrap())
     }
 
     pub fn identifier_or_keyword(&mut self) -> Option<Token> {

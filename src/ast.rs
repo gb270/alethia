@@ -5,7 +5,7 @@ pub enum AstNode {
     Program(Vec<AstNode>),
     VariableDeclaration { name: String, value: Box<AstNode> },
     BinaryExpression{ left: Box<AstNode>, operator: Token, right: Box<AstNode> },
-    NumberLiteral(i64),
+    NumberLiteral(f64),
     StringLiteral(String),
     Identifier(String),
     PrintStatement(Box<AstNode>),

@@ -1,4 +1,6 @@
-let str = "hello";
-let i = 0;
-print(str[i]);
+let y = 5;
+let x = 3;
 
+print(x/y);
+print(5/2);
+print(1/3);

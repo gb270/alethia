@@ -24,7 +24,7 @@ At this stage the language should have enough native support to be used such tha
 
 
 Extra steps to improve the language:
-- [ ] Add floats (yes this is not in the language at the moment...)
+- [x] Add floats
 - [ ] Implemnent modulo and exponent
 - [ ] Implement for loop
 - [ ] Add ability to index strings

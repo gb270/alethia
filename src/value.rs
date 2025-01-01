@@ -5,7 +5,7 @@ use crate::ast::AstNode;
 
 #[derive(Debug, Clone)]
 pub enum Value {
-    Number(i64),
+    Number(f64),
     String(String),
     Array(Vec<Value>),
     Dictionary(HashMap<String, Value>),
@@ -78,7 +78,7 @@ impl Mul for Value {
         match (self, other) {
             (Value::Number(a), Value::Number(b)) => Value::Number(a * b),
             (Value::String(s), Value::Number(n)) | (Value::Number(n), Value::String(s)) => {
-                if n < 0 {
+                if n < 0.0 {
                     panic!("Cannot multiply string by negative number");
                 }
                 Value::String(s.repeat(n as usize))
@@ -94,7 +94,7 @@ impl Div for Value {
     fn div(self, other: Value) -> Value {
         match (self, other) {
             (Value::Number(a), Value::Number(b)) => {
-                if b == 0 {
+                if b == 0.0 {
                     panic!("Division by zero");
                 }
                 Value::Number(a / b)
